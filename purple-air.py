@@ -3,7 +3,7 @@ import json
 import csv
 import re
 import os
-
+import datetime
 
 def get_purple_air():
     url = "https://www.purpleair.com/json?show=10586"
@@ -43,18 +43,22 @@ def get_data(info_sheet):
                      purple_air_info["results"][0]["THINGSPEAK_SECONDARY_ID"],
                      purple_air_info["results"][0]["THINGSPEAK_SECONDARY_ID_READ_KEY"],
                      purple_air_info["results"][0]["Lat"], purple_air_info["results"][0]["Lon"],
-                     purple_air_info["results"][0]["PM2_5Value"], purple_air_info["results"][0]["LastSeen"],
+                     purple_air_info["results"][0]["PM2_5Value"],
+                     datetime.datetime.utcfromtimestamp(purple_air_info["results"][0]["LastSeen"]).replace
+                     (tzinfo=datetime.timezone.utc),
                      purple_air_info["results"][0]["State"], purple_air_info["results"][0]["Type"],
                      purple_air_info["results"][0]["Hidden"], purple_air_info["results"][0]["Flag"],
                      purple_air_info["results"][0]["DEVICE_BRIGHTNESS"],
                      purple_air_info["results"][0]["DEVICE_HARDWAREDISCOVERED"],
                      purple_air_info["results"][0]["DEVICE_FIRMWAREVERSION"], purple_air_info["results"][0]["Version"],
-                     purple_air_info["results"][0]["LastUpdateCheck"], purple_air_info["results"][0]["Uptime"],
+                     datetime.datetime.utcfromtimestamp(purple_air_info["results"][0]["LastUpdateCheck"]).replace
+                     (tzinfo=datetime.timezone.utc),
+                     purple_air_info["results"][0]["Uptime"],
                      purple_air_info["results"][0]["RSSI"], purple_air_info["results"][0]["isOwner"],
                      purple_air_info["results"][0]["A_H"], purple_air_info["results"][0]["temp_f"],
                      purple_air_info["results"][0]["humidity"], purple_air_info["results"][0]["pressure"],
                      purple_air_info["results"][0]["AGE"], stats_0[0], stats_0[1], stats_0[2], stats_0[3], stats_0[4],
-                     stats_0[5], stats_0[6], stats_0[7],stats_0[8], stats_0[9],
+                     stats_0[5], stats_0[6], stats_0[7], stats_0[8], stats_0[9],
                      purple_air_info["results"][1]["ID"], purple_air_info["results"][1]["ParentID"],
                      purple_air_info["results"][1]["Label"], purple_air_info["results"][1]["DEVICE_LOCATIONTYPE"],
                      purple_air_info["results"][1]["THINGSPEAK_PRIMARY_ID"],
@@ -62,7 +66,9 @@ def get_data(info_sheet):
                      purple_air_info["results"][1]["THINGSPEAK_SECONDARY_ID"],
                      purple_air_info["results"][1]["THINGSPEAK_SECONDARY_ID_READ_KEY"],
                      purple_air_info["results"][1]["Lat"], purple_air_info["results"][1]["Lon"],
-                     purple_air_info["results"][1]["PM2_5Value"], purple_air_info["results"][1]["LastSeen"],
+                     purple_air_info["results"][1]["PM2_5Value"],
+                     datetime.datetime.utcfromtimestamp(purple_air_info["results"][1]["LastSeen"]).replace
+                     (tzinfo=datetime.timezone.utc),
                      purple_air_info["results"][1]["State"], purple_air_info["results"][1]["Type"],
                      purple_air_info["results"][1]["Hidden"], purple_air_info["results"][1]["Flag"],
                      purple_air_info["results"][1]["DEVICE_BRIGHTNESS"],
@@ -73,7 +79,7 @@ def get_data(info_sheet):
                      purple_air_info["results"][1]["A_H"], purple_air_info["results"][1]["temp_f"],
                      purple_air_info["results"][1]["humidity"], purple_air_info["results"][1]["pressure"],
                      purple_air_info["results"][1]["AGE"], stats_1[0], stats_1[1], stats_1[2], stats_1[3], stats_1[4],
-                     stats_1[5], stats_1[6], stats_1[7], stats_1[8], stats_1[9]])
+                     stats_1[5], stats_1[6], stats_1[7],stats_1[8], stats_1[9]])
 
 
 # main function to create log and call get_data
@@ -109,6 +115,7 @@ def main():
 
     get_data(info_sheet)
     info_sheet.close()
+
 
 # main
 main()
