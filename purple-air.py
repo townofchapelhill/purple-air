@@ -4,17 +4,25 @@ import csv
 import re
 import os
 import datetime
+import traceback
+
+# Open log file
+log = open("purpleairlog.txt", "a")
+now = datetime.datetime.now()
+
 
 def get_purple_air():
     url = "https://www.purpleair.com/json?show=10586"
     response = requests.get(url)
-    # if success then load content
-    if response.status_code == 200:
-        return json.loads(response.content.decode('utf-8'))
-    # Do nothing if failure (needs better error handling)
-    else:
-        print(response.status_code)
-        return None
+
+    try:
+        data = json.loads(response.content.decode('utf-8'))
+    except RuntimeError:
+        log.write(now.strftime("%Y-%m-%d %H:%M") + ": Could not load data from url. \n")
+        log.write(traceback.format_exc())
+
+    log.write(now.strftime("%Y-%m-%d %H:%M") + ": Data loaded from url successfully. \n")
+    return data
 
 
 def get_data(info_sheet):
@@ -79,7 +87,7 @@ def get_data(info_sheet):
                      purple_air_info["results"][1]["A_H"], purple_air_info["results"][1]["temp_f"],
                      purple_air_info["results"][1]["humidity"], purple_air_info["results"][1]["pressure"],
                      purple_air_info["results"][1]["AGE"], stats_1[0], stats_1[1], stats_1[2], stats_1[3], stats_1[4],
-                     stats_1[5], stats_1[6], stats_1[7],stats_1[8], stats_1[9]])
+                     stats_1[5], stats_1[6], stats_1[7], stats_1[8], stats_1[9]])
 
 
 # main function to create log and call get_data
@@ -113,8 +121,15 @@ def main():
                          "results.1.Stats.v4", "results.1.Stats.v5", "results.1.Stats.v6", "results.1.Stats.pm",
                          "results.1.Stats.lastModified", "results.1.Stats.timeSinceModified"])
 
-    get_data(info_sheet)
+    try:
+        get_data(info_sheet)
+    except RuntimeError:
+        log.write(now.strftime("%Y-%m-%d %H:%M") + ": Could not gather data. \n")
+        log.write(traceback.format_exc())
+    log.write(now.strftime("%Y-%m-%d %H:%M") + ": Data gathered successfully. \n")
+
     info_sheet.close()
+    log.close()
 
 
 # main
