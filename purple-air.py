@@ -45,10 +45,7 @@ def get_data(info_sheet):
     # writes air quality data to CSV
     writer = csv.writer(info_sheet)
     writer.writerow([ 
-                     purple_air_info["results"][0]["Label"], 
-                     purple_air_info["results"][0]["DEVICE_LOCATIONTYPE"],
-                     purple_air_info["results"][0]["Lat"], 
-                     purple_air_info["results"][0]["Lon"],
+                     datetime.datetime.utcfromtimestamp(purple_air_info["results"][0]["LastSeen"]).replace(tzinfo=datetime.timezone.utc),
                      purple_air_info["results"][0]["PM2_5Value"],
                      # I have no idea why this syntax is so weird, but it works
                      stats_0[1],
@@ -57,7 +54,10 @@ def get_data(info_sheet):
                      stats_0[4],
                      stats_0[5],
                      stats_0[6],
-                     datetime.datetime.utcfromtimestamp(purple_air_info["results"][0]["LastSeen"]).replace(tzinfo=datetime.timezone.utc),
+                     purple_air_info["results"][0]["Label"], 
+                     purple_air_info["results"][0]["DEVICE_LOCATIONTYPE"],
+                     purple_air_info["results"][0]["Lat"], 
+                     purple_air_info["results"][0]["Lon"],
                      purple_air_info["results"][0]["Uptime"],
                      purple_air_info["results"][0]["RSSI"], 
                      purple_air_info["results"][0]["A_H"], 
@@ -75,9 +75,9 @@ def write_sheet():
     # if there is data in the response, write CSV headers
     if os.stat("purple-air.csv").st_size == 0:
         writer = csv.writer(info_sheet)
-        writer.writerow(["Site Label", "Inside/Outside", "Latitude", "Longitude", "Current Particulate Matter 2.5 Value (PM 2.5)",
+        writer.writerow(["Last Check", "Current Particulate Matter 2.5 Value (PM 2.5)", "Site Label", "Inside/Outside", "Latitude", "Longitude", 
                          "PM 2.5 10 Minute Avg.", "PM 2.5 30 Minute Avg.", "PM 2.5 1 Hour Avg.", "PM 2.5 6 Hour Avg.", "PM 2.5 24 Hour Avg.",
-                         "PM 2.5 One Week Avg.", "Last Check", "Uptime (Seconds)", "RSSI (WiFi signal strength dBm)", 
+                         "PM 2.5 One Week Avg.", "Uptime (Seconds)", "RSSI (WiFi signal strength dBm)", 
                          "Hardware Issues", "Temp (F)", "Humidity (%)", "Pressure (mbar)", "Age of Data at Check (minutes)"])
 
     try:
