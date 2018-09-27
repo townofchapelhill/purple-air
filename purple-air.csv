@@ -1,0 +1,2 @@
+Site Label,Inside/Outside,Latitude,Longitude,Current Particulate Matter 2.5 Value (PM 2.5),PM 2.5 10 Minute Avg.,PM 2.5 30 Minute Avg.,PM 2.5 1 Hour Avg.,PM 2.5 6 Hour Avg.,PM 2.5 24 Hour Avg.,PM 2.5 One Week Avg.,Last Check,Uptime (Seconds),RSSI (WiFi signal strength dBm),Hardware Issues,Temp (F),Humidity (%),Pressure (mbar),Age of Data at Check (minutes)
+Chapel Hill Public Library,outside,35.932522,-79.035728,14.36,12.78,11.72,11.24,9.22,11.22,13.79,2018-09-27 18:04:31+00:00,560,-85,,86,61,1003.99,28
