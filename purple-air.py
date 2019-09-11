@@ -6,9 +6,11 @@ import re
 import os
 import datetime
 import traceback
+import filename_secrets
 
 # Open log file
-log = open("purpleairlog.txt", "a")
+logfilename = os.path.join(filename_secrets.productionStaging, "purpleairlog.txt")
+log = open(logfilename, "a")
 now = datetime.datetime.now()
 
 
@@ -54,31 +56,32 @@ def get_data(info_sheet):
                      stats_0[4],
                      stats_0[5],
                      stats_0[6],
+                     purple_air_info["results"][0]["temp_f"],
+                     purple_air_info["results"][0]["humidity"], 
+                     purple_air_info["results"][0]["pressure"],
                      purple_air_info["results"][0]["Label"], 
                      purple_air_info["results"][0]["DEVICE_LOCATIONTYPE"],
                      purple_air_info["results"][0]["Lat"], 
                      purple_air_info["results"][0]["Lon"],
                      purple_air_info["results"][0]["Uptime"],
                      purple_air_info["results"][0]["RSSI"], 
-                     purple_air_info["results"][0]["A_H"], 
-                     purple_air_info["results"][0]["temp_f"],
-                     purple_air_info["results"][0]["humidity"], 
-                     purple_air_info["results"][0]["pressure"],
                      purple_air_info["results"][0]["AGE"]
                      ])
 
 
 # main function to create log and call get_data
 def write_sheet():
-    info_sheet = open("purple-air.csv", "a")
+    infofilename = os.path.join(filename_secrets.productionStaging, "purple-air.csv")
+    info_sheet = open(infofilename, "a")
 
     # if there is data in the response, write CSV headers
-    if os.stat("purple-air.csv").st_size == 0:
+    if os.stat(infofilename).st_size == 0:
         writer = csv.writer(info_sheet)
-        writer.writerow(["Last Check", "Current Particulate Matter 2.5 Value (PM 2.5)", "Site Label", "Inside/Outside", "Latitude", "Longitude", 
-                         "PM 2.5 10 Minute Avg.", "PM 2.5 30 Minute Avg.", "PM 2.5 1 Hour Avg.", "PM 2.5 6 Hour Avg.", "PM 2.5 24 Hour Avg.",
-                         "PM 2.5 One Week Avg.", "Uptime (Seconds)", "RSSI (WiFi signal strength dBm)", 
-                         "Hardware Issues", "Temp (F)", "Humidity (%)", "Pressure (mbar)", "Age of Data at Check (minutes)"])
+        writer.writerow(["Last Check", "Current Particulate Matter 2.5 Value (PM 2.5)", "PM 2.5 10 Minute Avg.", "PM 2.5 30 Minute Avg.", 
+                         "PM 2.5 1 Hour Avg.", "PM 2.5 6 Hour Avg.", "PM 2.5 24 Hour Avg.", "PM 2.5 One Week Avg.",
+                          "Temp (F)", "Humidity (%)", "Pressure (mbar)",
+                         "Site Label", "Inside/Outside", "Latitude", "Longitude", "Uptime (Seconds)", "RSSI (WiFi signal strength dBm)", 
+                         "Hardware Issues", "Age of Data at Check (minutes)"])
 
     try:
         get_data(info_sheet)
